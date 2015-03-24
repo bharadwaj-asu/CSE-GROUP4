@@ -19,7 +19,13 @@ import java.util.*;
 
 public class HealthcareApp {
 
-public static User userprofile;
+    public static User userprofile;
+    
+// EDIT THE FOLLOWING FOR MYSQL ACCESS
+    public static final String URL="jdbc:mysql://localhost:3306/test";
+    public static final String USERNAME="root";
+    public static final String PASSWORD="";
+// EDIT ABOVE FOR MYSQL ACCESS
 
     public static void main(String[] args) {
         
@@ -27,9 +33,9 @@ public static User userprofile;
         Statement st = null;
         ResultSet rs = null;
 
-        String url = "jdbc:mysql://localhost:3306/test";
-        String user = "testuser";
-        String password = "test623";
+        String url = URL;
+        String user = USERNAME;
+        String password = PASSWORD;
         
         Scanner reader;
 
@@ -38,12 +44,6 @@ public static User userprofile;
             st = con.createStatement();
             rs = st.executeQuery("SELECT VERSION()");
 
-            if (rs.next()) {
-                System.out.println(rs.getString(1));
-            }
-            
-            rs = st.executeQuery("SELECT name FROM testTable WHERE pKey = 0");
-            
             if (rs.next()) {
                 System.out.println(rs.getString(1));
             }
@@ -101,6 +101,9 @@ public static User userprofile;
                                 userprofile = found;
 				return true;
 			}
+                        else {
+                            System.out.println("Invalid password.");
+                        }
 		}
 		else {
 			System.out.println("Invalid username.");
@@ -204,9 +207,11 @@ public static User userprofile;
             {
               // create our mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
-              Connection conn = DriverManager.getConnection(myUrl, "root", "");
+              Connection conn = DriverManager.getConnection(myUrl, user, password);
 
               // our SQL SELECT query. 
               // if you only need a few columns, specify them by name instead of using "*"
@@ -215,7 +220,7 @@ public static User userprofile;
               System.out.println(userprofile.getUserName());
               if (userprofile.isPatient()) {
                   query = "SELECT * FROM appointments WHERE patient='"+userprofile.getUserName()+"'";
-                  System.out.println(userprofile.getUserName());
+
                   //System.out.println("Test...PatientOK");
               }
               else query = "SELECT * FROM appointments WHERE doctor='"+userprofile.getUserName()+"'";
@@ -250,7 +255,7 @@ public static User userprofile;
                   while (rs.next())
                   {
                       Date date = rs.getDate("date");
-                      String docKey = rs.getString("patient");
+                      String docKey = rs.getString("doctor");
                       // doctor = SELECT fullname FROM users WHERE userName='docKey'
                       query = "SELECT fullname FROM users WHERE userName='"+docKey+"'";
                       Statement st2 = conn.createStatement();
@@ -283,9 +288,9 @@ public static User userprofile;
             {
               // create mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
-              String user = "testuser";
-              String password = "test623";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
               Connection conn = DriverManager.getConnection(myUrl, user, password);
               
@@ -320,9 +325,9 @@ public static User userprofile;
             {
               // create mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
-              String user = "testuser";
-              String password = "test623";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
               Connection conn = DriverManager.getConnection(myUrl, user, password);
               
@@ -349,9 +354,9 @@ public static User userprofile;
             {
               // create our mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
-              String user = "testuser";
-              String password = "test623";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
               Connection conn = DriverManager.getConnection(myUrl, user, password);
 
@@ -400,20 +405,19 @@ public static User userprofile;
             {
               // create our mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
-              Connection conn = DriverManager.getConnection(myUrl, "root", "");
+              Connection conn = DriverManager.getConnection(myUrl, user, password);
+              Connection conn2 = DriverManager.getConnection(myUrl, user, password);
 
-              // our SQL SELECT query. 
-              // if you only need a few columns, specify them by name instead of using "*"
               String query;
-              // create the java statement
-              Statement st = conn.createStatement();
 
-              // execute the query, and get a java resultset
+              Statement st = conn.createStatement();
+              Statement st2 = conn2.createStatement();
               ResultSet rs;
-              // System.out.println(userprofile.isPatient());
-              System.out.println(userprofile.getUserName());
+
               Date date;
               int pain, drowsiness, nausea, anxiety, depression;
               String comments;
@@ -435,23 +439,31 @@ public static User userprofile;
                     }
               }
               else {
-                  
+                  int i = 0;
+                  int j;
                   query = "SELECT * FROM patientdoctorjoin WHERE doctor='"+userprofile.getUserName()+"'";
-                  System.out.println(query);
+                  //System.out.println(query);
                   rs = st.executeQuery(query);
                   ResultSet rs2;
                   String patient, patientName;
+                  System.out.println("Before first while");
                   while (rs.next()) {
+                      i++;
+                      System.out.println("After "+i+" instance of first while");
                       patient = rs.getString("patient");
                       query = "SELECT fullname FROM users WHERE userName='"+patient+"'";
-                      System.out.println(query);
-                      rs2 = st.executeQuery(query);
+                      //System.out.println(query);
+                      rs2 = st2.executeQuery(query);
                       rs2.next();
                       patientName = rs2.getString("fullname");
                       query = "SELECT * FROM reports WHERE patient='"+patient+"' ORDER BY dateTime ASC";
-                      System.out.println(query);
-                      rs2 = st.executeQuery(query);
+                      //System.out.println(query);
+                      rs2 = st2.executeQuery(query);
+                      System.out.println("Before 2nd while");
+                      j=0;
                       while (rs2.next()) {
+                          j++;
+                          System.out.println("After 2nd while instance "+j);
                           date = rs2.getDate("dateTime");
                           pain = rs2.getInt("pain");
                           drowsiness = rs2.getInt("drowsiness");
@@ -461,8 +473,11 @@ public static User userprofile;
                           comments = rs2.getString("comments");
                           System.out.format("%s, %s, pain: %d, drowsiness: %d, nausea: %d, anxiety: %d, depression: %d, Comments: %s\n", date, patientName, pain, drowsiness, nausea, anxiety, depression, comments);
                       }
+                      rs2.close();
+                      st2.close();
                   }
               }
+              rs.close();
               st.close();
             }
             catch (Exception e)
@@ -501,9 +516,9 @@ public static User userprofile;
             {
               // create mysql database connection
               String myDriver = "org.gjt.mm.mysql.Driver";
-              String myUrl = "jdbc:mysql://localhost:3306/test";
-              String user = "testuser";
-              String password = "test623";
+              String myUrl = URL;
+              String user = USERNAME;
+              String password = PASSWORD;
               Class.forName(myDriver);
               Connection conn = DriverManager.getConnection(myUrl, user, password);
               
@@ -513,7 +528,7 @@ public static User userprofile;
               //String date = df.format(d);
               SimpleDateFormat dt = new SimpleDateFormat("yyyyMMddhhmmss");
               
-              // SQL INSERT query. 
+              // SQL INSERT query.
 
               String query = "INSERT INTO reports (patient, dateTime, pain, drowsiness, nausea, anxiety, depression, comments) VALUES ('"+userprofile.getUserName()+"',"+dt.format(date)+","+pain+","+drowsiness+","+nausea+","+anxiety+","+depression+",'"+comments+"')";
 

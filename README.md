@@ -1,6 +1,8 @@
 # CSE-GROUP4
 group 4 Project
-Hi 
-You can find the code in the root folder
-The documents can be found in docs folder
+Change Log
+SRS Updated to version 3.0
+Stage II Deliverables added
+Stage I deliverables updated
+Stage I deliverables added
 

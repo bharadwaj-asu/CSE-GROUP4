@@ -74,7 +74,7 @@ public class HealthcareApp {
 		boolean quit = false;
 		boolean loggedIn = false;
 		reader = new Scanner(System.in);
-                int t=1;
+                int t=1;   //to limit the number of attempts
                 System.out.println("Welcome to Healthcare!");
 		while (quit == false) {
 
@@ -86,7 +86,7 @@ public class HealthcareApp {
 				loggedIn = authenticate(username, passHash);
                                 t++;
                                 System.out.println(t);
-                                if(t>3){
+                                    if(t>3){   //limiting number of attempts
                                  System.out.println("You have entered wrong credentials 3 times..exiting");
                                  System.exit(0);
                                 }
@@ -533,22 +533,35 @@ public class HealthcareApp {
             Scanner sc = new Scanner(System.in);
             System.out.println("Enter severity of Pain: ");
             pain = sc.nextInt();
+            if (pain >10 || pain <1){
+                System.out.println("Enter Proper Value");
+             pain = sc.nextInt();  
+            }
             sc.nextLine();
             System.out.println("Enter severity of Drowsiness: ");
             drowsiness = sc.nextInt();
+            if (drowsiness >10 || drowsiness <1)
+             drowsiness = sc.nextInt();  
             sc.nextLine();
             System.out.println("Enter severity of Nausea: ");
             nausea = sc.nextInt();
+            if (nausea >10 || nausea <1)
+             nausea = sc.nextInt();  
             sc.nextLine();
             System.out.println("Enter severity of Anxiety: ");
             anxiety = sc.nextInt();
+            if (anxiety >10 || anxiety <1)
+             anxiety = sc.nextInt();  
             sc.nextLine();
             System.out.println("Enter severity of Depression: ");
             depression = sc.nextInt();
+            if (depression >10 || depression <1)
+             depression = sc.nextInt();  
             sc.nextLine();
             System.out.println("Enter any further comments.");
             String comments = sc.nextLine();
             
+                
             try
             {
               // create mysql database connection

@@ -24,7 +24,7 @@ public class HealthcareApp {
 // EDIT THE FOLLOWING FOR MYSQL ACCESS
     public static final String URL="jdbc:mysql://localhost:3306/test";
     public static final String USERNAME="root";
-    public static final String PASSWORD="";
+    public static final String PASSWORD="Arya@123";
 // EDIT ABOVE FOR MYSQL ACCESS
 
     public static void main(String[] args) {
@@ -74,6 +74,7 @@ public class HealthcareApp {
 		boolean quit = false;
 		boolean loggedIn = false;
 		reader = new Scanner(System.in);
+                int t=1;
                 System.out.println("Welcome to Healthcare!");
 		while (quit == false) {
 
@@ -83,6 +84,12 @@ public class HealthcareApp {
 				System.out.print("Please enter your password: ");
 				passHash = reader.nextLine();
 				loggedIn = authenticate(username, passHash);
+                                t++;
+                                System.out.println(t);
+                                if(t>3){
+                                 System.out.println("You have entered wrong credentials 3 times..exiting");
+                                 System.exit(0);
+                                }
 			}
                         
                         System.out.println(userprofile.typeOfUser);
@@ -94,6 +101,7 @@ public class HealthcareApp {
     }
 
 	public static boolean authenticate(String userName, String passHash) {
+            
 		User found = searchUser(userName);
 		passHash = hash(passHash);
 		if (found != null) {
@@ -102,12 +110,18 @@ public class HealthcareApp {
 				return true;
 			}
                         else {
+                             
                             System.out.println("Invalid password.");
+                            
+                           
+                                
                         }
 		}
 		else {
+                       
 			System.out.println("Invalid username.");
 		}
+                
 		
 		return false;
 		
@@ -119,10 +133,11 @@ public class HealthcareApp {
 	
 	}
 	
-	public static void menu() {
+	public static String menu() {
             
                 String input;
                 Scanner sc = new Scanner(System.in);
+                String b="NULL";
                 
                 String thirdOption;
                 
@@ -160,11 +175,14 @@ public class HealthcareApp {
                             else {
                                 makeAppointment();
                             }
+                            
+                           
                         }
 			else {
 				System.out.println("Invalid input.");
 				menu();
 			}
+			 return (b);
 		
 		}
 		else if (userprofile.getType() == userType.doctor) {
@@ -196,13 +214,15 @@ public class HealthcareApp {
                                 menu();
                             
                         }
-		
+		return (b);
 		}
-	
+		
+		 
+	return (b);
 	}
         
-        public static void viewAppointments() {
-            
+        public static String viewAppointments() {
+            String b = null;
             try
             {
               // create our mysql database connection
@@ -238,6 +258,7 @@ public class HealthcareApp {
                 // iterate through the java resultset
                 while (rs.next())
                 {
+                    b="doctor";
                   Date date = rs.getDate("date");
                   String patKey = rs.getString("patient");
                   // doctor = SELECT fullname FROM users WHERE userName='docKey'
@@ -250,10 +271,12 @@ public class HealthcareApp {
                   // print the results
                   System.out.format("%s, with patient %s\n", date, patient);
                 }
+                return("Doctor");
               }
               else {
                   while (rs.next())
                   {
+                     b="patient";
                       Date date = rs.getDate("date");
                       String docKey = rs.getString("doctor");
                       // doctor = SELECT fullname FROM users WHERE userName='docKey'
@@ -265,19 +288,21 @@ public class HealthcareApp {
                       // print the results
                       System.out.format("%s, with Doctor %s\n", date, doctor);
                   }
+                  
               }
               
-              st.close();
+              //st.close();
             }
             catch (Exception e)
             {
               System.err.println("Got an exception! ");
               System.err.println(e.getMessage());
             }
-            
+        
+            return(b);
         }
         
-        public static void makeAppointment () {
+        public static boolean makeAppointment () {
             
             Scanner reader = new Scanner(System.in);
             
@@ -310,9 +335,12 @@ public class HealthcareApp {
             }
             catch (Exception e)
             {
+                
               System.err.println("Got an exception! ");
               System.err.println(e.getMessage());
-
+              return false;
+                
+                
             }
 
             System.out.println("Enter the time of the appointment, in the form hhmmss : ");
@@ -330,12 +358,13 @@ public class HealthcareApp {
               String password = PASSWORD;
               Class.forName(myDriver);
               Connection conn = DriverManager.getConnection(myUrl, user, password);
-              
+               
               String query = "INSERT INTO appointments (patient, doctor, date) VALUES ('"+patient+"','"+userprofile.getUserName()+"',"+date+")";
 
               Statement st = conn.createStatement();
               st.executeUpdate(query);
               st.close();
+              
             }
             catch (Exception e)
             {
@@ -343,6 +372,7 @@ public class HealthcareApp {
               System.err.println(e.getMessage());
 
             }
+			return false;
             
         }
         
@@ -388,6 +418,7 @@ public class HealthcareApp {
                 System.out.format("%s, %s, %s, %s\n", qUserName, qPassHash, usertype, lastlogin);
               }
               st.close();
+              
             }
             catch (Exception e)
             {
@@ -399,8 +430,8 @@ public class HealthcareApp {
             
         }
         
-        public static void viewReports() {
-            
+        public static String viewReports() {
+            String b="none";
             try
             {
               // create our mysql database connection
@@ -437,6 +468,7 @@ public class HealthcareApp {
                       comments = rs.getString("comments");
                       System.out.format("%s, pain: %d, drowsiness: %d, nausea: %d, anxiety: %d, depression: %d, Comments: %s\n", date, pain, drowsiness, nausea, anxiety, depression, comments);
                     }
+                  b="patient";
               }
               else {
                   int i = 0;
@@ -475,20 +507,25 @@ public class HealthcareApp {
                       }
                       rs2.close();
                       st2.close();
+                        
                   }
+                b="doctor";
               }
               rs.close();
               st.close();
+              return(b);
+              
             }
             catch (Exception e)
             {
               System.err.println("Got an exception! ");
               System.err.println(e.getMessage());
+              return("none");
             }
             
         }
         
-        public static void submitReport() {
+        public static int submitReport() {
             
             int pain, drowsiness, nausea, anxiety, depression;
             
@@ -535,11 +572,13 @@ public class HealthcareApp {
               Statement st = conn.createStatement();
               st.executeUpdate(query);
               st.close();
+              return 1;
             }
             catch (Exception e)
             {
               System.err.println("Got an exception! ");
               System.err.println(e.getMessage());
+              return 0;
             }
             
             // INSERT INTO reports (pain, drowsiness, nausea, anxiety, depression) VALUES ("+pain+","+drowsiness+","+nausea+","+anxiety+","+depression+","+comments)

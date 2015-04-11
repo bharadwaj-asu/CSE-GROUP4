@@ -18,6 +18,7 @@ public class User {
     public userType typeOfUser;
     private Date lastLogin;
     
+    
     public User (String un, String ph, userType ut, Date ll) {
         
         userName = un;

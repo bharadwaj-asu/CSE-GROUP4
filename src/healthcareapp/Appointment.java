@@ -121,10 +121,11 @@ public class Appointment {
         
     }
     
-    public void authorize () {
+    public boolean authorize () {
         
         authorized = true;
         update();
+        return authorized;
         
     }
     

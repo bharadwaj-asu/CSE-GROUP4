@@ -39,6 +39,11 @@ public class User {
         return(typeOfUser.equals(userType.doctor));
         
     }
+    public boolean isNurse() {
+        System.out.println(typeOfUser+"\n"+userType.nurse);
+        return(typeOfUser.equals(userType.nurse));
+        
+    }
     
     public userType getType() {
         

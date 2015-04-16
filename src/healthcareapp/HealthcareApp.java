@@ -27,7 +27,7 @@ public class HealthcareApp {
     public static final String PASSWORD="Arya@123";
 // EDIT ABOVE FOR MYSQL ACCESS
 
-    public static void main(String[] args) {
+    public static int main(String[] args) {
         
         Connection con = null;
         Statement st = null;
@@ -89,15 +89,17 @@ public class HealthcareApp {
                                     if(t>3){   //limiting number of attempts
                                  System.out.println("You have entered wrong credentials 3 times..exiting");
                                  System.exit(0);
+                                 return 0;
                                 }
-			}
+                                  return 1;
+                        }
                         
                         System.out.println(userprofile.typeOfUser);
 			
 			menu();
 			
 		}
-
+                return 1;
     }
 
 	public static boolean authenticate(String userName, String passHash) {
@@ -595,7 +597,7 @@ public class HealthcareApp {
             }
             
             // INSERT INTO reports (pain, drowsiness, nausea, anxiety, depression) VALUES ("+pain+","+drowsiness+","+nausea+","+anxiety+","+depression+","+comments)
-            
+           
         }
         
 }

@@ -199,7 +199,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
         lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.PAGE_AXIS));
         lowerPanel.add(apptsLabel);
         lowerPanel.add(listScroller);
-        lowerPanel.add(creAppt);
+        if(!profile.isPatient()) lowerPanel.add(creAppt);
         lowerPanel.add(viewAppt);
 
         list2.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

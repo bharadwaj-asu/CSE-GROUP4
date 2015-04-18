@@ -8,6 +8,7 @@ package practicegui;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
@@ -67,6 +68,46 @@ public class Report {
         
         return viewed;
         
+    }
+    
+    public static int evaluate(int pa, int dr, int na, int de, int an) {
+        double pain = 0;
+        double drowsiness = 0;
+        double nausea = 0;
+        double depression = 0;
+        double anxiety = 0;
+        try{
+            
+            String myDriver = "org.gjt.mm.mysql.Driver";
+            Class.forName(myDriver);
+            String url=null;
+            String user = "root";
+            String pass = "";
+
+            url = "jdbc:mysql://localhost:3306/test";
+            Connection con;
+            Statement st;
+            
+            con=DriverManager.getConnection(url, user, pass);
+            st=con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT pain, drowsiness, nausea, depression, anxiety FROM reports");
+            int i = 0;
+            while(rs.next()) {
+                pain = pain + rs.getInt("pain");
+                drowsiness = drowsiness + rs.getInt("drowsiness");
+                nausea = nausea + rs.getInt("nausea");
+                depression = depression +  + rs.getInt("depression");
+                anxiety = anxiety +  + rs.getInt("anxiety");
+                i++;
+            }
+            System.out.println("pain: " + pain + ", drowsiness: " + drowsiness);
+        }
+        catch(Exception e){
+            System.out.println(e);
+            //dispose();
+        }
+        int z = 0;
+        return z;
     }
 
     public Date getDateTime() {

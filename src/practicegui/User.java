@@ -58,7 +58,28 @@ public class User {
     public String getUserName () {
         
         return userName;
-        
+
+    }
+    public static String hash(String pw, String salt) {
+		
+		int m=0;
+		int charInt;
+		char d;
+		String passHash="";
+		for (int n = 0; n < pw.length(); n++) {
+			charInt = 97 + pw.charAt(n)%26;
+			d = (char)charInt;
+			m++;
+			passHash = passHash + d;
+			if ((m*n)%5 == 0) {
+				passHash = passHash + (((int)pw.charAt(m%pw.length()))%10);
+				//str = str + pw.charAt(m)%10;
+			}
+			if (m==salt.length()) m = 0;
+		}
+		
+		return passHash.trim();
+
     }
     public Date getLastLogin () {
         

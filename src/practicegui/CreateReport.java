@@ -29,6 +29,82 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
     final String patient;
     final String doctor;
     User profile = null;
+    static JRadioButton b00,b01,b02,b03,b04,b05,b06,b07,b08,b09;
+    static JRadioButton b10,b11,b12,b13,b14,b15,b16,b17,b18,b19;
+    static JRadioButton b20,b21,b22,b23,b24,b25,b26,b27,b28,b29;
+    static JRadioButton b30,b31,b32,b33,b34,b35,b36,b37,b38,b39;
+    static JRadioButton b40,b41,b42,b43,b44,b45,b46,b47,b48,b49;
+    
+    public static int getPain() {
+        int pain = 0;
+        if (b00.isSelected()) pain = 1;
+        else if (b01.isSelected()) pain = 2;
+        else if (b02.isSelected()) pain = 3;
+        else if (b03.isSelected()) pain = 4;
+        else if (b04.isSelected()) pain = 5;
+        else if (b05.isSelected()) pain = 6;
+        else if (b06.isSelected()) pain = 7;
+        else if (b07.isSelected()) pain = 8;
+        else if (b08.isSelected()) pain = 9;
+        else if (b09.isSelected()) pain = 10;
+        return pain;
+    }
+    public static int getDrowsiness() {
+        int drowsiness = 0;
+        if (b10.isSelected()) drowsiness = 1;
+        else if (b11.isSelected()) drowsiness = 2;
+        else if (b12.isSelected()) drowsiness = 3;
+        else if (b13.isSelected()) drowsiness = 4;
+        else if (b14.isSelected()) drowsiness = 5;
+        else if (b15.isSelected()) drowsiness = 6;
+        else if (b16.isSelected()) drowsiness = 7;
+        else if (b17.isSelected()) drowsiness = 8;
+        else if (b18.isSelected()) drowsiness = 9;
+        else if (b19.isSelected()) drowsiness = 10;
+        return drowsiness;
+    }
+    public static int getNausea() {
+        int nausea = 0;
+        if (b20.isSelected()) nausea = 1;
+        else if (b21.isSelected()) nausea = 2;
+        else if (b22.isSelected()) nausea = 3;
+        else if (b23.isSelected()) nausea = 4;
+        else if (b24.isSelected()) nausea = 5;
+        else if (b25.isSelected()) nausea = 6;
+        else if (b26.isSelected()) nausea = 7;
+        else if (b27.isSelected()) nausea = 8;
+        else if (b28.isSelected()) nausea = 9;
+        else if (b29.isSelected()) nausea = 10;
+        return nausea;
+    }
+    public static int getAnxiety() {
+        int anxiety = 0;
+        if (b30.isSelected()) anxiety = 1;
+        else if (b31.isSelected()) anxiety = 2;
+        else if (b32.isSelected()) anxiety = 3;
+        else if (b33.isSelected()) anxiety = 4;
+        else if (b34.isSelected()) anxiety = 5;
+        else if (b35.isSelected()) anxiety = 6;
+        else if (b36.isSelected()) anxiety = 7;
+        else if (b37.isSelected()) anxiety = 8;
+        else if (b38.isSelected()) anxiety = 9;
+        else if (b39.isSelected()) anxiety = 10;
+        return anxiety;
+    }
+    public static int getDepression() {
+        int depression = 0;
+        if (b40.isSelected()) depression = 1;
+        else if (b41.isSelected()) depression = 2;
+        else if (b42.isSelected()) depression = 3;
+        else if (b43.isSelected()) depression = 4;
+        else if (b44.isSelected()) depression = 5;
+        else if (b45.isSelected()) depression = 6;
+        else if (b46.isSelected()) depression = 7;
+        else if (b47.isSelected()) depression = 8;
+        else if (b48.isSelected()) depression = 9;
+        else if (b49.isSelected()) depression = 10;
+        return depression;
+    }
 
     public CreateReport(User u) {
         profile = u;
@@ -87,21 +163,21 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         JLabel s4 = new JLabel("Anxiety: ");
         
         final ButtonGroup bg0 = new ButtonGroup();
-        ButtonGroup bg1 = new ButtonGroup();
-        ButtonGroup bg2 = new ButtonGroup();
+        final ButtonGroup bg1 = new ButtonGroup();
+        final ButtonGroup bg2 = new ButtonGroup();
         final ButtonGroup bg3 = new ButtonGroup();
-        ButtonGroup bg4 = new ButtonGroup();
+        final ButtonGroup bg4 = new ButtonGroup();
         
-        JRadioButton b00 = new JRadioButton("1");
-        JRadioButton b01 = new JRadioButton("2");
-        JRadioButton b02 = new JRadioButton("3");
-        JRadioButton b03 = new JRadioButton("4");
-        JRadioButton b04 = new JRadioButton("5");
-        JRadioButton b05 = new JRadioButton("6");
-        JRadioButton b06 = new JRadioButton("7");
-        JRadioButton b07 = new JRadioButton("8");
-        JRadioButton b08 = new JRadioButton("9");
-        JRadioButton b09 = new JRadioButton("10");
+        b00 = new JRadioButton("1");
+        b01 = new JRadioButton("2");
+        b02 = new JRadioButton("3");
+        b03 = new JRadioButton("4");
+        b04 = new JRadioButton("5");
+        b05 = new JRadioButton("6");
+        b06 = new JRadioButton("7");
+        b07 = new JRadioButton("8");
+        b08 = new JRadioButton("9");
+        b09 = new JRadioButton("10");
         bg0.add(b00);
         bg0.add(b01);
         bg0.add(b02);
@@ -292,8 +368,18 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
                     int anxiety = 0;
                     int depression = 0;
                     String comments = commentBox.getText();
-                    if(bg3.getSelection().getActionCommand()!=null) depression = Integer.parseInt(bg3.getSelection().getActionCommand());
-
+                    if (bg0.getSelection() != null) pain = getPain();
+                    if (bg1.getSelection() != null) drowsiness = getDrowsiness();
+                    if (bg2.getSelection() != null) nausea = getNausea();
+                    if (bg3.getSelection() != null) anxiety = getAnxiety();
+                    if (bg4.getSelection() != null) depression = getDepression();
+                    double result = Report.evaluate(pain, drowsiness, nausea, anxiety, depression);
+                    if (result > 0.253) {
+                        
+                    }
+                    if (result > 1.645) {
+                        
+                    }
                     url = "jdbc:mysql://localhost:3306/test";
                     con=DriverManager.getConnection(url, user, pass);
                     st=con.createStatement();

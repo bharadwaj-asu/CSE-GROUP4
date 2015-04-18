@@ -12,6 +12,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -76,6 +77,7 @@ public class CreateUser extends javax.swing.JFrame implements ActionListener {
             // read from the various user input interfaces combobox for usertype, text input for un, pw, fn, random generated string for salt
             
             try{
+                String newSalt = "";
                 String myDriver = "org.gjt.mm.mysql.Driver";
                 Connection con;
                 Statement st;
@@ -87,18 +89,40 @@ public class CreateUser extends javax.swing.JFrame implements ActionListener {
                 url = "jdbc:mysql://localhost:3306/test";
                 con=DriverManager.getConnection(url, user, pass);
                 st=con.createStatement();
-                int newUt = c0.getSelectedIndex()-1;
+                int newUt = c0.getSelectedIndex();
                 //generate newSalt
+                Random rand = new Random();
+                int saltLength = 6 + rand.nextInt(7);
+                // System.out.println("Salt length: " + saltLength);
+                char c;
+                int integ, integ2, integ3;
+                int coin;
+                for (int k = 0; k < saltLength; k++) {
+                    
+                    rand = new Random();
+                    integ = rand.nextInt(10) + 48;
+
+                    integ2 = rand.nextInt(26) + 97;
+                    integ3 = rand.nextInt(26) + 65;
+                    coin = rand.nextInt();
+                    // System.out.print(integ+ ":" + (char)integ + " " + integ2 + ":" + (char)integ2 + " " + integ3 + ":" + (char)integ3);
+                    if (coin%3 == 0) integ = integ2;
+                    else if (coin%3 == 1) integ = integ3;
+                    c = (char)integ;
+                    newSalt = newSalt + c;
+                    
+                }
+                // end generate new salt
                 String dateStr;
                 Format formatter = new SimpleDateFormat("yyyyMMddhhmmss");
                 dateStr = formatter.format(date);
-                String newSalt = "d9Fd7A";
+                
                 String newUn = b0.getText();
                 String newPh = b1.getText();
                 String newFn = b2.getText();
                 ResultSet rs = st.executeQuery("SELECT fullname FROM users WHERE userName='"+newUn+"'");
                 if(rs.next()) throw new Exception("User already exists: "+rs.getString("fullname"));
-                st.executeUpdate("INSERT INTO users (userName, passHash, userType, lastLogin, fullname, salt) VALUES ('"+newUn+"', '"+newPh+"', '"+newUt+"', '"+dateStr+"', '"+newFn+"', '"+newSalt+"')");
+                st.executeUpdate("INSERT INTO users (userName, passHash, userType, lastLogin, fullname, salt) VALUES ('"+newUn+"', '"+User.hash(newPh,newSalt)+"', '"+newUt+"', '"+dateStr+"', '"+newFn+"', '"+newSalt+"')");
             }catch(Exception e2){
                 System.out.println(e2);
                 dispose();

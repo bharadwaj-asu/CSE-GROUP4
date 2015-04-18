@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 class PracticeGUI extends JFrame implements ActionListener{
+    int n = 0;
     Connection con=null;
     Statement st=null;
     ResultSet rs=null;
@@ -27,6 +28,7 @@ class PracticeGUI extends JFrame implements ActionListener{
     JButton b1,b2;
     JTextField t1;
     JPasswordField pf;
+    
     PracticeGUI(){
         Toolkit tk=Toolkit.getDefaultToolkit();
     Image img=tk.getImage("C:/Image.jpg");
@@ -130,11 +132,14 @@ class PracticeGUI extends JFrame implements ActionListener{
                     return;
                 }
 
-                ResultSet rs=st.executeQuery("select passHash, usertype, lastLogin from users where userName='"+t1.getText().trim()+"'");
-                String username = t1.getText().trim();
+                ResultSet rs=st.executeQuery("select passHash, usertype, lastLogin, salt from users where userName='"+t1.getText().trim()+"'");
+                // String username = t1.getText().trim();
 
                 if(rs.next()){
-                    if(rs.getString(1).equals(pf.getText())){
+                    System.out.println(rs.getString("salt"));
+                    System.out.println(User.hash(pf.getText(),rs.getString("salt")));
+                    if(User.hash(pf.getText(),rs.getString("salt")).equals(rs.getString(1))){
+                        // System.out.println(User.hash(rs.getString(1),rs.getString("salt")));
                         String un = t1.getText();
                         String ph = pf.getText();
                         userType ut;
@@ -160,6 +165,11 @@ class PracticeGUI extends JFrame implements ActionListener{
                         dispose();
                         hs.show();
                     }else{
+                        n++;
+                        if (n==3) {
+                            JOptionPane.showMessageDialog(this,"Too many login attempts.");
+                            System.exit(0);
+                        }
                         JOptionPane.showMessageDialog(this,"Invalid Password");
                     }
 

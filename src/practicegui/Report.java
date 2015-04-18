@@ -6,6 +6,7 @@
 
 package practicegui;
 
+import static java.lang.Math.sqrt;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -70,12 +71,16 @@ public class Report {
         
     }
     
-    public static int evaluate(int pa, int dr, int na, int de, int an) {
+    public static double evaluate(int pa, int dr, int na, int de, int an) {
         double pain = 0;
         double drowsiness = 0;
         double nausea = 0;
         double depression = 0;
         double anxiety = 0;
+        double sd = 0;
+        double symptomComp = 0;
+        double repSymptomComp = 0;
+        //System.out.println("evaluating");
         try{
             
             String myDriver = "org.gjt.mm.mysql.Driver";
@@ -92,6 +97,7 @@ public class Report {
             st=con.createStatement();
             ResultSet rs = st.executeQuery("SELECT pain, drowsiness, nausea, depression, anxiety FROM reports");
             int i = 0;
+            //System.out.println("preparing to calculate mean");
             while(rs.next()) {
                 pain = pain + rs.getInt("pain");
                 drowsiness = drowsiness + rs.getInt("drowsiness");
@@ -100,13 +106,27 @@ public class Report {
                 anxiety = anxiety +  + rs.getInt("anxiety");
                 i++;
             }
-            System.out.println("pain: " + pain + ", drowsiness: " + drowsiness);
+            
+            symptomComp = pain + drowsiness + nausea + depression + anxiety;
+            symptomComp = symptomComp/(5*i);
+            rs = st.executeQuery("SELECT pain, drowsiness, nausea, depression, anxiety FROM reports");
+            int repTot = 0;
+            int sdSum = 0;
+            while(rs.next()) {
+                repTot = rs.getInt("pain") + rs.getInt("drowsiness") + rs.getInt("nausea") + rs.getInt("depression") + rs.getInt("anxiety");
+                sdSum = sdSum + repTot;
+            }
+            repTot = repTot/i;
+            sd = sqrt(repTot);
+            System.out.println("sd: " + sd);
         }
         catch(Exception e){
             System.out.println(e);
             //dispose();
         }
-        int z = 0;
+        double z = 0;
+        repSymptomComp = (pa+dr+na+an+de)/5;
+        if(sd!=0) z = (repSymptomComp - symptomComp) / sd;
         return z;
     }
 

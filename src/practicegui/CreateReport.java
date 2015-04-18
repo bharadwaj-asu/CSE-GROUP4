@@ -16,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -36,6 +37,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
     static JRadioButton b40,b41,b42,b43,b44,b45,b46,b47,b48,b49;
     
     public static int getPain() {
+        // System.out.println("getting pain");
         int pain = 0;
         if (b00.isSelected()) pain = 1;
         else if (b01.isSelected()) pain = 2;
@@ -47,6 +49,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         else if (b07.isSelected()) pain = 8;
         else if (b08.isSelected()) pain = 9;
         else if (b09.isSelected()) pain = 10;
+        // System.out.println("pain got");
         return pain;
     }
     public static int getDrowsiness() {
@@ -61,6 +64,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         else if (b17.isSelected()) drowsiness = 8;
         else if (b18.isSelected()) drowsiness = 9;
         else if (b19.isSelected()) drowsiness = 10;
+        // System.out.println("drwos got");
         return drowsiness;
     }
     public static int getNausea() {
@@ -75,6 +79,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         else if (b27.isSelected()) nausea = 8;
         else if (b28.isSelected()) nausea = 9;
         else if (b29.isSelected()) nausea = 10;
+        // System.out.println("nausea");
         return nausea;
     }
     public static int getAnxiety() {
@@ -89,6 +94,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         else if (b37.isSelected()) anxiety = 8;
         else if (b38.isSelected()) anxiety = 9;
         else if (b39.isSelected()) anxiety = 10;
+        // System.out.println("anxietty");
         return anxiety;
     }
     public static int getDepression() {
@@ -103,6 +109,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         else if (b47.isSelected()) depression = 8;
         else if (b48.isSelected()) depression = 9;
         else if (b49.isSelected()) depression = 10;
+        // System.out.println("Depression got");
         return depression;
     }
 
@@ -203,16 +210,16 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         
         
         
-        JRadioButton b10 = new JRadioButton("1");
-        JRadioButton b11 = new JRadioButton("2");
-        JRadioButton b12 = new JRadioButton("3");
-        JRadioButton b13 = new JRadioButton("4");
-        JRadioButton b14 = new JRadioButton("5");
-        JRadioButton b15 = new JRadioButton("6");
-        JRadioButton b16 = new JRadioButton("7");
-        JRadioButton b17 = new JRadioButton("8");
-        JRadioButton b18 = new JRadioButton("9");
-        JRadioButton b19 = new JRadioButton("10");
+        b10 = new JRadioButton("1");
+        b11 = new JRadioButton("2");
+        b12 = new JRadioButton("3");
+        b13 = new JRadioButton("4");
+        b14 = new JRadioButton("5");
+        b15 = new JRadioButton("6");
+        b16 = new JRadioButton("7");
+        b17 = new JRadioButton("8");
+        b18 = new JRadioButton("9");
+        b19 = new JRadioButton("10");
         bg1.add(b10);
         bg1.add(b11);
         bg1.add(b12);
@@ -224,16 +231,16 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         bg1.add(b18);
         bg1.add(b19);
         
-        JRadioButton b20 = new JRadioButton("1");
-        JRadioButton b21 = new JRadioButton("2");
-        JRadioButton b22 = new JRadioButton("3");
-        JRadioButton b23 = new JRadioButton("4");
-        JRadioButton b24 = new JRadioButton("5");
-        JRadioButton b25 = new JRadioButton("6");
-        JRadioButton b26 = new JRadioButton("7");
-        JRadioButton b27 = new JRadioButton("8");
-        JRadioButton b28 = new JRadioButton("9");
-        JRadioButton b29 = new JRadioButton("10");
+        b20 = new JRadioButton("1");
+        b21 = new JRadioButton("2");
+        b22 = new JRadioButton("3");
+        b23 = new JRadioButton("4");
+        b24 = new JRadioButton("5");
+        b25 = new JRadioButton("6");
+        b26 = new JRadioButton("7");
+        b27 = new JRadioButton("8");
+        b28 = new JRadioButton("9");
+        b29 = new JRadioButton("10");
         bg2.add(b20);
         bg2.add(b21);
         bg2.add(b22);
@@ -245,16 +252,16 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         bg2.add(b28);
         bg2.add(b29);
         
-        JRadioButton b30 = new JRadioButton("1");
-        JRadioButton b31 = new JRadioButton("2");
-        JRadioButton b32 = new JRadioButton("3");
-        JRadioButton b33 = new JRadioButton("4");
-        JRadioButton b34 = new JRadioButton("5");
-        JRadioButton b35 = new JRadioButton("6");
-        JRadioButton b36 = new JRadioButton("7");
-        JRadioButton b37 = new JRadioButton("8");
-        JRadioButton b38 = new JRadioButton("9");
-        JRadioButton b39 = new JRadioButton("10");
+        b30 = new JRadioButton("1");
+        b31 = new JRadioButton("2");
+        b32 = new JRadioButton("3");
+        b33 = new JRadioButton("4");
+        b34 = new JRadioButton("5");
+        b35 = new JRadioButton("6");
+        b36 = new JRadioButton("7");
+        b37 = new JRadioButton("8");
+        b38 = new JRadioButton("9");
+        b39 = new JRadioButton("10");
         bg3.add(b30);
         bg3.add(b31);
         bg3.add(b32);
@@ -266,16 +273,16 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
         bg3.add(b38);
         bg3.add(b39);
         
-        JRadioButton b40 = new JRadioButton("1");
-        JRadioButton b41 = new JRadioButton("2");
-        JRadioButton b42 = new JRadioButton("3");
-        JRadioButton b43 = new JRadioButton("4");
-        JRadioButton b44 = new JRadioButton("5");
-        JRadioButton b45 = new JRadioButton("6");
-        JRadioButton b46 = new JRadioButton("7");
-        JRadioButton b47 = new JRadioButton("8");
-        JRadioButton b48 = new JRadioButton("9");
-        JRadioButton b49 = new JRadioButton("10");
+        b40 = new JRadioButton("1");
+        b41 = new JRadioButton("2");
+        b42 = new JRadioButton("3");
+        b43 = new JRadioButton("4");
+        b44 = new JRadioButton("5");
+        b45 = new JRadioButton("6");
+        b46 = new JRadioButton("7");
+        b47 = new JRadioButton("8");
+        b48 = new JRadioButton("9");
+        b49 = new JRadioButton("10");
         bg4.add(b40);
         bg4.add(b41);
         bg4.add(b42);
@@ -353,7 +360,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
             Date now = Calendar.getInstance().getTime();
             DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
             String nowStr = df.format(now);
-            
+            // System.out.println("clicked submit");
             try{
                     String myDriver = "org.gjt.mm.mysql.Driver";
                     Connection con;
@@ -368,17 +375,22 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
                     int anxiety = 0;
                     int depression = 0;
                     String comments = commentBox.getText();
+                    // System.out.println("about to get variables");
                     if (bg0.getSelection() != null) pain = getPain();
                     if (bg1.getSelection() != null) drowsiness = getDrowsiness();
                     if (bg2.getSelection() != null) nausea = getNausea();
                     if (bg3.getSelection() != null) anxiety = getAnxiety();
                     if (bg4.getSelection() != null) depression = getDepression();
+                    // System.out.println("calling evaluate");
                     double result = Report.evaluate(pain, drowsiness, nausea, anxiety, depression);
-                    if (result > 0.253) {
-                        
-                    }
+                    // System.out.println("evaluation complete: " + result);
                     if (result > 1.645) {
-                        
+                        JOptionPane.showMessageDialog(CreateReport.this, "Your symptoms are severe.  Please contact your doctor immediately, or visit an emergency room.");
+                    }
+                    else if (result > 0.253) {
+                        JOptionPane.showMessageDialog(CreateReport.this, "Please make an appointment with your doctor.");
+                        CreateAppointment ca = new CreateAppointment(profile);
+                        ca.show();
                     }
                     url = "jdbc:mysql://localhost:3306/test";
                     con=DriverManager.getConnection(url, user, pass);

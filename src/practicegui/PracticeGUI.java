@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static java.util.Arrays.equals;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +29,11 @@ class PracticeGUI extends JFrame implements ActionListener{
     JButton b1,b2;
     JTextField t1;
     JPasswordField pf;
-    
+    JComboBox<String> c;
+    private final String [] list  ={"patient","Doctor","Nurse","Receptionist"};
     PracticeGUI(){
+       
+       
         Toolkit tk=Toolkit.getDefaultToolkit();
     Image img=tk.getImage("C:/Image.jpg");
     setIconImage(img);
@@ -45,7 +49,9 @@ class PracticeGUI extends JFrame implements ActionListener{
         setTitle("Login");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
         setLayout(new FlowLayout());
+         c=new JComboBox(list);
         l1=new JLabel("UserName");   
         l2=new JLabel("Password");
         t1=new JTextField(10);
@@ -61,7 +67,7 @@ class PracticeGUI extends JFrame implements ActionListener{
             }
         }
         };
-
+      int p11= c.getSelectedIndex();
         t1.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "TransferFocus");
         t1.getActionMap().put("TransferFocus", action);
 
@@ -87,7 +93,9 @@ class PracticeGUI extends JFrame implements ActionListener{
         p2.setBackground(new Color(0,67,150));
         p3.setBackground(new Color(243,0,0)); 
         p4.setBackground(new Color(0,0,226));
+        
         p0.add(topLabel);
+        p0.add(c);
         p1.add(l1);
         p1.add(t1);
         p2.add(l2);
@@ -116,7 +124,7 @@ class PracticeGUI extends JFrame implements ActionListener{
                     String user = "root";
                     String pass = "";
 
-                    url = "jdbc:mysql://localhost:3306/test";
+                    url = "jdbc:mysql://localhost:3306/test1";
                     con=DriverManager.getConnection(url, user, pass);
                     st=con.createStatement();
                 }catch(Exception e){
@@ -131,15 +139,17 @@ class PracticeGUI extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(this,"Enter Password");
                     return;
                 }
-
+                  int li=c.getSelectedIndex();
                 ResultSet rs=st.executeQuery("select passHash, usertype, lastLogin, salt from users where userName='"+t1.getText().trim()+"'");
                 // String username = t1.getText().trim();
 
                 if(rs.next()){
+                    System.out.println(rs.getInt("userType"));
                     System.out.println(rs.getString("salt"));
                     System.out.println(User.hash(pf.getText(),rs.getString("salt")));
+                    if (rs.getInt("userType") == li){
                     if(User.hash(pf.getText(),rs.getString("salt")).equals(rs.getString(1))){
-                        // System.out.println(User.hash(rs.getString(1),rs.getString("salt")));
+                      //   System.out.println(User.hash(rs.getString(1),rs.getString("salt")));
                         String un = t1.getText();
                         String ph = pf.getText();
                         userType ut;
@@ -164,6 +174,7 @@ class PracticeGUI extends JFrame implements ActionListener{
                         HomeScreen hs = new HomeScreen(profile);
                         dispose();
                         hs.show();
+                    }
                     }else{
                         n++;
                         if (n==3) {

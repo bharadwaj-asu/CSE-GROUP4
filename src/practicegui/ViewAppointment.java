@@ -41,16 +41,18 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
+        JPanel topPanel = new JPanel();
         JPanel upperPanel = new JPanel();
         JPanel middlePanel = new JPanel();
         JPanel lowerPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
+        this.getContentPane().add(topPanel);
         this.getContentPane().add(upperPanel);
         this.getContentPane().add(middlePanel);
         this.getContentPane().add(lowerPanel);
         this.getContentPane().add(bottomPanel);
         
-        lowerPanel.setLayout(new BoxLayout(lowerPanel,BoxLayout.LINE_AXIS));
+        //lowerPanel.setLayout(new BoxLayout(lowerPanel,BoxLayout.LINE_AXIS));
         
         JLabel label = new JLabel("View Appointment");
         JLabel madeLabel = new JLabel("Appointment made: ");
@@ -83,7 +85,7 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
                 rs = st.executeQuery("SELECT patient,doctor,date,dateMade FROM appointments WHERE pkey='"+apptid+"'");
                 rs.next();
                 doctorID = rs.getString("doctor");
-                date = rs.getDate("date");
+                date = rs.getTimestamp("date");
                 dateMade = rs.getDate("dateMade");
                 Format formatter = new SimpleDateFormat("dd MMMM yyyy");
                 String dm = formatter.format(dateMade);
@@ -104,7 +106,7 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         }
         Format formatter = new SimpleDateFormat("MMMM");
         String selectMonth = formatter.format(date);
-        upperPanel.add(label);
+        topPanel.add(label);
         formatter = new SimpleDateFormat("d");
         String selectDay = formatter.format(date);
         formatter = new SimpleDateFormat("yyyy");
@@ -117,7 +119,9 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         String selectAmpm = formatter.format(date);
         selectAmpm = selectAmpm.toLowerCase();
         
-        middlePanel.add(madeLabel);
+        System.out.println("Date: " + date + "\nMonth: " + selectMonth + " " + selectDay + ", " + selectYear + "\n" + selectHour + ":" + selectMin + ":" + "00");
+        
+        upperPanel.add(madeLabel);
 
         String[] months = {"January","February","March","April","May","June","July","August","Septempber","October","November","December"};
         final JComboBox c0 = new JComboBox(months);
@@ -142,20 +146,54 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         c4.setSelectedItem(selectMin);
         String[] ampm = {"am","pm"};
         final JComboBox c5 = new JComboBox(ampm);
-        c5.setSelectedItem(selectAmpm);
+        if(selectAmpm.equals("am")) c5.setSelectedIndex(0);
+        else{ c5.setSelectedIndex(1); }
         JLabel doctorLabel = new JLabel("Doctor: "+doctor);
         JLabel patientLabel = new JLabel("Patient: "+patient);
-        middlePanel.add(patientLabel);
-        middlePanel.add(doctorLabel);
+        upperPanel.add(patientLabel);
+        upperPanel.add(doctorLabel);
         
+        middlePanel.add(dateLabel);
+        middlePanel.add(c0);
+        middlePanel.add(c1);
+        middlePanel.add(c2);
         lowerPanel.add(timeLabel);
-        lowerPanel.add(c0);
-        lowerPanel.add(c1);
-        lowerPanel.add(c2);
-        lowerPanel.add(dateLabel);
         lowerPanel.add(c3);
         lowerPanel.add(c4);
         lowerPanel.add(c5);
+        
+        JButton cancelAppt = new JButton("Cancel");
+        cancelAppt.addActionListener(new ActionListener()
+        {
+          
+          public void actionPerformed(ActionEvent e)
+          {
+            try{
+                    String myDriver = "org.gjt.mm.mysql.Driver";
+                    Connection con;
+                    Statement st;
+                    Class.forName(myDriver);
+                    String url=null;
+                    String user = "root";
+                    String pass = "";
+
+                    url = "jdbc:mysql://localhost:3306/test";
+                    con=DriverManager.getConnection(url, user, pass);
+                    st=con.createStatement();
+                    st.executeUpdate("DELETE FROM appointments WHERE pkey='"+apptid+"'");
+                    
+            }catch(Exception e2){
+                System.out.println(e2);
+                dispose();
+            }
+
+            JFrame hs = new HomeScreen(profile);
+            ViewAppointment.this.hide();
+            hs.show();
+            ViewAppointment.this.hide();
+          }
+        });
+        bottomPanel.add(cancelAppt);
         
         JButton submit = new JButton("Submit");
         submit.addActionListener(new ActionListener()
@@ -175,6 +213,7 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
             else amPmOffset = 13;
             int horaInt = c3.getSelectedIndex() + amPmOffset;
             String hora = String.format("%02d", horaInt);
+            // System.out.println("str: " + hora + "; int: " + horaInt);
             fullApptDate = fullApptDate + hora + c4.getSelectedItem().toString() + "00";
 
             try{
@@ -197,7 +236,7 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
             }
 
             JFrame hs = new HomeScreen(profile);
-            
+            ViewAppointment.this.hide();
             hs.show();
           }
         });

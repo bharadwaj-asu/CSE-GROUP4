@@ -24,7 +24,7 @@ public class UserIT {
     
     public UserIT() {
     }
-    Date date = new GregorianCalendar(2015,10,11).getTime();
+    Date date = new Date(10102015);
     User instance = new User("dummy","dummy",doctor,date);
     User instance1= new User("dummy","dummy",patient,date);  
         

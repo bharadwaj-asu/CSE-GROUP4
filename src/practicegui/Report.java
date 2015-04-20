@@ -118,7 +118,7 @@ public class Report {
             }
             repTot = repTot/i;
             sd = sqrt(repTot);
-            System.out.println("sd: " + sd);
+            // System.out.println("sd: " + sd);
         }
         catch(Exception e){
             System.out.println(e);

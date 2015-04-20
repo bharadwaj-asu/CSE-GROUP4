@@ -190,9 +190,10 @@ public class ViewReport extends javax.swing.JFrame implements ActionListener {
           
           public void actionPerformed(ActionEvent e)
           {
-
-            JFrame hs = new HomeScreen(profile);
             
+            JFrame hs = new HomeScreen(profile);
+            ViewReport.this.hide();
+            ViewReport.this.dispose();
             hs.show();
           }
         });

@@ -1,6 +1,8 @@
 package practicegui;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -48,9 +50,15 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
         JPanel upperPanel = new JPanel();
         JPanel lowerPanel = new JPanel();
         JPanel lowerPanel2 = new JPanel();
+        
+        lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.PAGE_AXIS));
+        lowerPanel2.setLayout(new BoxLayout(lowerPanel2, BoxLayout.PAGE_AXIS));
+        
         this.getContentPane().add(upperPanel, "North");
+        // this.getContentPane().add(bp0, "West");
         this.getContentPane().add(lowerPanel, "West");
         this.getContentPane().add(lowerPanel2, "East");
+        // this.getContentPane().add(bp1, "East");
 
         upperPanel.add(new JLabel("Welcome to Healthcare!"));
 
@@ -179,7 +187,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame ca = new CreateAppointment(profile);
-            
+            HomeScreen.this.hide();
             ca.show();
           }
         });
@@ -191,7 +199,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame va = new ViewAppointment(profile, apptids[list.getSelectedIndex()]);
-            
+            HomeScreen.this.hide();
             va.show();
           }
         });
@@ -212,7 +220,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame cu = new CreateUser(profile);
-            
+            HomeScreen.this.hide();
             cu.show();
           }
         });
@@ -222,8 +230,10 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame vr = new ViewReport(profile, rptids[list2.getSelectedIndex()]);
-            
+            HomeScreen.this.hide();
+            HomeScreen.this.dispose();
             vr.show();
+            HomeScreen.this.hide();
           }
         });
         
@@ -232,7 +242,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame cr = new CreateReport(profile);
-            
+            HomeScreen.this.hide();
             cr.show();
           }
         });
@@ -242,13 +252,13 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
           public void actionPerformed(ActionEvent e)
           {
             JFrame vr = new ViewReport(profile, rptids[list2.getSelectedIndex()]);
-            
+            HomeScreen.this.hide();
             vr.show();
           }
         });
 
         JScrollPane listScroller2 = new JScrollPane(list2);
-        listScroller.setPreferredSize(new Dimension(250, 80));
+        listScroller2.setPreferredSize(new Dimension(250, 80));
 
         lowerPanel2.setLayout(new BoxLayout(lowerPanel2, BoxLayout.PAGE_AXIS));
         lowerPanel2.add(rptsLabel);
@@ -344,6 +354,7 @@ public class HomeScreen extends javax.swing.JFrame implements ActionListener {
         if (e.getSource() == creAppt) {
             JFrame ca = new CreateAppointment(profile);
             dispose();
+            HomeScreen.this.hide();
             ca.show();
         }
         else if (e.getSource() == creRpt) {

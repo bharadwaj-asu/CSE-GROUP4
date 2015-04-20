@@ -390,6 +390,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
                     else if (result > 0.253) {
                         JOptionPane.showMessageDialog(CreateReport.this, "Please make an appointment with your doctor.");
                         CreateAppointment ca = new CreateAppointment(profile);
+                        CreateReport.this.hide();
                         ca.show();
                     }
                     url = "jdbc:mysql://localhost:3306/test";
@@ -403,7 +404,7 @@ public class CreateReport extends javax.swing.JFrame implements ActionListener {
             }
 
             JFrame hs = new HomeScreen(profile);
-            
+            CreateReport.this.hide();
             hs.show();
           }
         });

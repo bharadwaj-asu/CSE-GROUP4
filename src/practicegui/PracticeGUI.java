@@ -77,12 +77,7 @@ class PracticeGUI extends JFrame implements ActionListener{
         JPanel p1=new JPanel();   
         JPanel p2=new JPanel();      
         JPanel p3=new JPanel();  
-        JPanel p4=new JPanel();   
-        // p1.setBackground(new Color(243,67,226));
-        // p2.setBackground(new Color(0,67,150));
-        // p3.setBackground(new Color(243,0,0)); 
-        // p4.setBackground(new Color(0,0,226));
-        //topLabel.setBounds(105, 100, 250, 35);
+        JPanel p4=new JPanel();
         p0.add(topLabel);
         p1.add(l1);
         p1.add(t1);
@@ -133,8 +128,8 @@ class PracticeGUI extends JFrame implements ActionListener{
                 // String username = t1.getText().trim();
 
                 if(rs.next()){
-                    System.out.println(rs.getString("salt"));
-                    System.out.println(User.hash(pf.getText(),rs.getString("salt")));
+                    // System.out.println(rs.getString("salt"));
+                    // System.out.println(User.hash(pf.getText(),rs.getString("salt")));
                     if(User.hash(pf.getText(),rs.getString("salt")).equals(rs.getString(1))){
                         // System.out.println(User.hash(rs.getString(1),rs.getString("salt")));
                         String un = t1.getText();

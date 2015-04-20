@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -119,7 +120,7 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         String selectAmpm = formatter.format(date);
         selectAmpm = selectAmpm.toLowerCase();
         
-        System.out.println("Date: " + date + "\nMonth: " + selectMonth + " " + selectDay + ", " + selectYear + "\n" + selectHour + ":" + selectMin + ":" + "00");
+        //System.out.println("Date: " + date + "\nMonth: " + selectMonth + " " + selectDay + ", " + selectYear + "\n" + selectHour + ":" + selectMin + ":" + "00");
         
         upperPanel.add(madeLabel);
 
@@ -162,30 +163,35 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
         lowerPanel.add(c4);
         lowerPanel.add(c5);
         
-        JButton cancelAppt = new JButton("Cancel");
+        JButton cancelAppt = new JButton("Cancel Appointment");
+
         cancelAppt.addActionListener(new ActionListener()
         {
           
           public void actionPerformed(ActionEvent e)
           {
-            try{
-                    String myDriver = "org.gjt.mm.mysql.Driver";
-                    Connection con;
-                    Statement st;
-                    Class.forName(myDriver);
-                    String url=null;
-                    String user = "root";
-                    String pass = "";
+              int dialogButton = JOptionPane.YES_NO_OPTION;
+              int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to cancel this appointment?","Warning",dialogButton);
+              if(dialogResult == JOptionPane.YES_OPTION){
+                try{
+                        String myDriver = "org.gjt.mm.mysql.Driver";
+                        Connection con;
+                        Statement st;
+                        Class.forName(myDriver);
+                        String url=null;
+                        String user = "root";
+                        String pass = "";
 
-                    url = "jdbc:mysql://localhost:3306/test";
-                    con=DriverManager.getConnection(url, user, pass);
-                    st=con.createStatement();
-                    st.executeUpdate("DELETE FROM appointments WHERE pkey='"+apptid+"'");
-                    
-            }catch(Exception e2){
-                System.out.println(e2);
-                dispose();
-            }
+                        url = "jdbc:mysql://localhost:3306/test";
+                        con=DriverManager.getConnection(url, user, pass);
+                        st=con.createStatement();
+                        st.executeUpdate("DELETE FROM appointments WHERE pkey='"+apptid+"'");
+
+                }catch(Exception e2){
+                    System.out.println(e2);
+                    dispose();
+                }
+              }
 
             JFrame hs = new HomeScreen(profile);
             ViewAppointment.this.hide();
@@ -193,6 +199,19 @@ public class ViewAppointment extends javax.swing.JFrame implements ActionListene
             ViewAppointment.this.hide();
           }
         });
+        JButton returnHome = new JButton("Return to home...");
+        returnHome.addActionListener(new ActionListener()
+        {
+          
+          public void actionPerformed(ActionEvent e)
+          {
+              ViewAppointment.this.hide();
+            JFrame hs = new HomeScreen(profile);
+            
+            hs.show();
+          }
+        });
+        bottomPanel.add(returnHome);
         bottomPanel.add(cancelAppt);
         
         JButton submit = new JButton("Submit");
